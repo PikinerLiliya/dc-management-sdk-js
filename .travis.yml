@@ -12,3 +12,4 @@ node_js:
 branches:
   only:
     - master
+    - feature/cloneHub
