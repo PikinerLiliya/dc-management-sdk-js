@@ -7,6 +7,7 @@ export {
 export { Event } from './lib/model/Event';
 export { Edition } from './lib/model/Edition';
 export { Hub } from './lib/model/Hub';
+export { ContentTypeSchema } from './lib/model/ContentTypeSchema';
 export { ContentRepository } from './lib/model/ContentRepository';
 export { ContentItem } from './lib/model/ContentItem';
 export { Pageable } from './lib/model/Pageable';

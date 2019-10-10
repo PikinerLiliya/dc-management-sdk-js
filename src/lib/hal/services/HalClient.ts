@@ -70,6 +70,45 @@ export class HalClient {
     return this.parse(response.data, resourceConstructor);
   }
 
+  public async deleteResource<T extends HalResource>(
+    path: string,
+    data: any,
+    resourceConstructor: HalResourceConstructor<T>
+  ): Promise<T> {
+    const response = await this.invoke({
+      data: this.serialize(data),
+      method: 'delete',
+      url: path
+    });
+    return this.parse(response.data, resourceConstructor);
+  }
+
+  public async putResource<T extends HalResource>(
+    path: string,
+    data: any,
+    resourceConstructor: HalResourceConstructor<T>
+  ): Promise<T> {
+    const response = await this.invoke({
+      data: this.serialize(data),
+      method: 'put',
+      url: path
+    });
+    return this.parse(response.data, resourceConstructor);
+  }
+
+  public async patchResource<T extends HalResource>(
+    path: string,
+    data: any,
+    resourceConstructor: HalResourceConstructor<T>
+  ): Promise<T> {
+    const response = await this.invoke({
+      data: this.serialize(data),
+      method: 'patch',
+      url: path
+    });
+    return this.parse(response.data, resourceConstructor);
+  }
+
   public parse<T extends HalResource>(
     data: any,
     resourceConstructor: HalResourceConstructor<T>

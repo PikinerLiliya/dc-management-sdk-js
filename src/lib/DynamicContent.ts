@@ -4,6 +4,7 @@ import { ContentItem } from './model/ContentItem';
 import { ContentRepository } from './model/ContentRepository';
 import { Edition } from './model/Edition';
 import { Event } from './model/Event';
+import { Folder } from './model/Folder';
 import { Hub, HubsPage } from './model/Hub';
 import { Page } from './model/Page';
 import { Pageable } from './model/Pageable';
@@ -88,6 +89,40 @@ export class DynamicContent {
   };
 
   /**
+   * Content Item Resources
+   */
+  public readonly contentItems = {
+    /**
+     * Archive a content item resource by id
+     * @param id content item id, previously generated on creation
+     * @param resource is object, that contains version
+     */
+    archive: (id: string, resource: ContentItem): Promise<ContentItem> =>
+      this.client.createResource(
+        `/content-items/${id}/archive`,
+        resource,
+        ContentItem
+      ),
+    /**
+     * Retrieve a content item resource by id
+     * @param id content item id, previously generated on creation
+     */
+    get: (id: string): Promise<ContentItem> =>
+      this.client.fetchResource(`/content-items/${id}`, ContentItem),
+    /**
+     * Unrchive a content item resource by id
+     * @param id content item id, previously generated on creation
+     * @param resource is object, that contains version
+     */
+    unarchive: (id: string, resource: ContentItem): Promise<ContentItem> =>
+      this.client.createResource(
+        `/content-items/${id}/unarchive`,
+        resource,
+        ContentItem
+      )
+  };
+
+  /**
    * Content Repository Resources
    */
   public readonly contentRepositories = {
@@ -102,16 +137,13 @@ export class DynamicContent {
       )
   };
 
-  /**
-   * Content Item Resources
-   */
-  public readonly contentItems = {
+  public readonly folders = {
     /**
-     * Retrieve a content item resource by id
-     * @param id content item id, previously generated on creation
+     * Retrieve a folder resource by id
+     * @param id folder id, previously generated on creation
      */
-    get: (id: string): Promise<ContentItem> =>
-      this.client.fetchResource(`/content-items/${id}`, ContentItem)
+    get: (id: string): Promise<Folder> =>
+      this.client.fetchResource(`/folders/${id}`, Folder)
   };
 
   /**

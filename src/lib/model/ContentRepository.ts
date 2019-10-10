@@ -1,5 +1,7 @@
 import { HalResource } from '../hal/models/HalResource';
 import { ContentItem, ContentItemsPage } from './ContentItem';
+import { ContentType } from './ContentType';
+import { Folder, FoldersPage } from './Folder';
 import { Page } from './Page';
 import { Pageable } from './Pageable';
 import { Sortable } from './Sortable';
@@ -40,6 +42,32 @@ export class ContentRepository extends HalResource {
    * Resources and actions related to a Content Repository
    */
   public readonly related = {
+    /**
+     * Assign Content type to the repository
+     * @param resource
+     */
+    assign: (resource: ContentType): Promise<ContentType> =>
+      this.createLinkedResource(
+        'assign-content-type',
+        {},
+        resource,
+        ContentType
+      ),
+    folders: {
+      /**
+       * Retrieves the list of top-level folders within this Content Repository
+       */
+      list: (options?: Pageable): Promise<Page<Folder>> =>
+        this.fetchLinkedResource('folders', options, FoldersPage),
+
+      /**
+       * Creates a folder in the Content Repository
+       * @param resource The new Folder to create
+       */
+      create: (resource: Folder): Promise<Folder> =>
+        this.createLinkedResource('create-folder', {}, resource, Folder)
+    },
+
     contentItems: {
       /**
        * Creates a content item inside the repository
