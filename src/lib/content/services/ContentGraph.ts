@@ -1,3 +1,4 @@
+import * as MapPromise from "bluebird";
 import { ContentItem } from '../../model/ContentItem';
 import { JsonTree } from '../../utils/JsonTree';
 import { ContentLink, ContentLinkInstance } from '../models/ContentLink';
@@ -70,9 +71,12 @@ export class ContentGraph {
           .then(item => {
             // visit children
             const links = ContentGraph.extractLinks(item.body);
-            return Promise.all(links.map(link => processItem(link.id))).then(
+            return MapPromise.map(links, (link) => processItem(link.id),
+              {concurrency: 1})
+              .then(() => item);
+            /*return Promise.all(links.map(link => processItem(link.id))).then(
               () => item
-            );
+            );*/
           })
           .then(item => {
             // Rewrite the body so that linked items point to the id of the copy
@@ -92,7 +96,8 @@ export class ContentGraph {
       }
     };
 
-    await Promise.all(ids.map(id => processItem(id)));
+    await MapPromise.map(ids, (id) => processItem(id),
+      {concurrency: 1});
     return mapping;
   }
 }
