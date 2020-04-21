@@ -1,4 +1,4 @@
-import * as MapPromise from "bluebird";
+import * as MapPromise from 'bluebird';
 import { ContentItem } from '../../model/ContentItem';
 import { JsonTree } from '../../utils/JsonTree';
 import { ContentLink, ContentLinkInstance } from '../models/ContentLink';
@@ -71,9 +71,9 @@ export class ContentGraph {
           .then(item => {
             // visit children
             const links = ContentGraph.extractLinks(item.body);
-            return MapPromise.map(links, (link) => processItem(link.id),
-              {concurrency: 1})
-              .then(() => item);
+            return MapPromise.map(links, link => processItem(link.id), {
+              concurrency: 1
+            }).then(() => item);
             /*return Promise.all(links.map(link => processItem(link.id))).then(
               () => item
             );*/
@@ -96,8 +96,7 @@ export class ContentGraph {
       }
     };
 
-    await MapPromise.map(ids, (id) => processItem(id),
-      {concurrency: 1});
+    await MapPromise.map(ids, id => processItem(id), { concurrency: 1 });
     return mapping;
   }
 }
